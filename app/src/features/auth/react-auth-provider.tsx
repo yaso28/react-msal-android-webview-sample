@@ -1,14 +1,14 @@
 import { MsalProvider, useMsal } from "@azure/msal-react"
 import { useCallback, useMemo, type ReactNode } from "react"
-import { AuthContext, type AuthContextValue } from "./context"
+import { AuthContext, type AuthContextValue } from "./auth-context"
 import { msalInstance } from "./msal-instance"
 import { MSAL_CONFIG } from "@/env"
 
-type AuthProviderProps = {
+type ReactAuthProviderProps = {
   children: ReactNode
 }
 
-const AuthProviderInner = ({children}: AuthProviderProps) => {
+const ReactAuthProviderInner = ({children}: ReactAuthProviderProps) => {
   const { instance, accounts } = useMsal()
 
   const account = accounts.length > 0 ? accounts[0] : undefined
@@ -48,12 +48,12 @@ const AuthProviderInner = ({children}: AuthProviderProps) => {
   )
 }
 
-export const AuthProvider = ({children}: AuthProviderProps) => {
+export const ReactAuthProvider = ({children}: ReactAuthProviderProps) => {
   return (
     <MsalProvider instance={msalInstance}>
-      <AuthProviderInner>
+      <ReactAuthProviderInner>
         {children}
-      </AuthProviderInner>
+      </ReactAuthProviderInner>
     </MsalProvider>
   )
 }

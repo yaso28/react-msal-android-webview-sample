@@ -5,7 +5,7 @@ export type AuthContextValue = {
   username: string | undefined,
   login: () => Promise<void>,
   logout: () => Promise<void>,
-  acquireToken: () => Promise<string>,
+  acquireToken: () => Promise<string | undefined>,
 }
 
 export const AuthContext = createContext<AuthContextValue | undefined>(undefined)
