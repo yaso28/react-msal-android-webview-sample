@@ -3,8 +3,8 @@ import { scan } from "@/features/scan/scan";
 import axios from "axios";
 import { useState } from "react";
 
-const intenalUrl = "/sample.txt"
-const externalUrl = "https://jsonplaceholder.typicode.com/posts/1"
+const intenalUrl = "/sample.txt";
+const externalUrl = "https://jsonplaceholder.typicode.com/posts/1";
 
 const MainPage = () => {
   const [token, setToken] = useState<string | undefined>(undefined);
@@ -65,22 +65,22 @@ const MainPage = () => {
 
   const handleFetch = async (url: string) => {
     try {
-      const response = await fetch(url)
-      const data = await response.text()
-      setHttpResult(JSON.stringify(data))
+      const response = await fetch(url);
+      const data = await response.text();
+      setHttpResult(JSON.stringify(data));
     } catch (e) {
       console.error(e);
-      setHttpResult(JSON.stringify(e))
+      setHttpResult(JSON.stringify(e));
     }
-  }
+  };
 
   const handleAxios = async (url: string) => {
     try {
       const response = await axios.get(url);
-      setHttpResult(JSON.stringify(response.data))
+      setHttpResult(JSON.stringify(response.data));
     } catch (e) {
       console.error(e);
-      setHttpResult(JSON.stringify(e))
+      setHttpResult(JSON.stringify(e));
     }
   };
 
@@ -100,11 +100,11 @@ const MainPage = () => {
         {isAuthenticated ? (
           <>
             <button onClick={handleLogout}>Logout</button>
-            <p>username: {username}</p>
+            <p className="value">username: {username}</p>
 
             <button onClick={handleAcquireToken}>Acquire Token</button>
             <button onClick={handleClearToken}>Clear Token</button>
-            <p>token: {token}</p>
+            <p className="value">token: {token}</p>
           </>
         ) : (
           <>
@@ -116,7 +116,7 @@ const MainPage = () => {
       <div>
         <button onClick={handleScan}>Scan</button>
         <button onClick={handleClearScan}>Clear Scan</button>
-        <p>scan: {scanResult}</p>
+        <p className="value">scan: {scanResult}</p>
       </div>
 
       <div>
@@ -125,7 +125,7 @@ const MainPage = () => {
         <button onClick={() => handleAxios(intenalUrl)}>Axios Internal</button>
         <button onClick={() => handleAxios(externalUrl)}>Axios External</button>
         <button onClick={handleClearHttp}>Clear Http</button>
-        <p>http: {httpResult}</p>
+        <p className="value">http: {httpResult}</p>
       </div>
     </>
   );
