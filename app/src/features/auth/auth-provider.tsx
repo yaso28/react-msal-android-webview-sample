@@ -7,9 +7,9 @@ type AuthProviderProps = {
 }
 
 export const AuthProvider = ({children}: AuthProviderProps) => {
-  if (window.AndroidProxy) {
+  if (window.AndroidAuth) {
     return (
-      <AndroidAuthProvider proxy={window.AndroidProxy}>
+      <AndroidAuthProvider androidAuth={window.AndroidAuth}>
         {children}
       </AndroidAuthProvider>
     )

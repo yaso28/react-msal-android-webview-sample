@@ -3,18 +3,21 @@ import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react
 import { AuthContext, type AuthContextValue } from "./auth-context"
 
 type AndroidAuthProviderProps = {
-  proxy: NonNullable<Window["AndroidProxy"]>,
+  androidAuth: NonNullable<Window["AndroidAuth"]>,
   children: ReactNode,
 }
 
-export const AndroidAuthProvider = ({proxy, children}: AndroidAuthProviderProps) => {
+export const AndroidAuthProvider = ({
+  androidAuth,
+  children,
+}: AndroidAuthProviderProps) => {
   const [username, setUsername] = useState<string | undefined>(undefined)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   useEffect(() => {
     const init = async () => {
       try {
-        const name = await proxy.getUsername()
+        const name = await androidAuth.getUsername()
         setUsername(name)
         setIsAuthenticated(!!name)
       } catch {
@@ -23,18 +26,19 @@ export const AndroidAuthProvider = ({proxy, children}: AndroidAuthProviderProps)
     }
 
     void init()
-  }, [proxy])
+  }, [androidAuth])
 
   const login = useCallback(async () => {
-  }, [])
+    await androidAuth.signIn(MSAL_CONFIG.SCOPE)
+  }, [androidAuth])
 
   const logout = useCallback(async () => {
-    await proxy.signOut()
-  }, [proxy])
+    await androidAuth.signOut()
+  }, [androidAuth])
 
   const acquireToken = useCallback(async () => {
-    return await proxy.acquireToken(MSAL_CONFIG.SCOPE)
-  }, [proxy])
+    return await androidAuth.acquireToken(MSAL_CONFIG.SCOPE)
+  }, [androidAuth])
 
   const value = useMemo<AuthContextValue>(() => ({
     isAuthenticated,
