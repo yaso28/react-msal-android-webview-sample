@@ -1,10 +1,15 @@
 import { useAuth } from "@/features/auth/use-auth";
 import { scan } from "@/features/scan/scan";
+import axios from "axios";
 import { useState } from "react";
+
+const intenalUrl = "/sample.txt"
+const externalUrl = "https://jsonplaceholder.typicode.com/posts/1"
 
 const MainPage = () => {
   const [token, setToken] = useState<string | undefined>(undefined);
   const [scanResult, setScanResult] = useState("");
+  const [httpResult, setHttpResult] = useState("");
 
   const { isAuthenticated, username, login, logout, acquireToken } = useAuth();
 
@@ -58,6 +63,35 @@ const MainPage = () => {
     }
   };
 
+  const handleFetch = async (url: string) => {
+    try {
+      const response = await fetch(url)
+      const data = await response.text()
+      setHttpResult(JSON.stringify(data))
+    } catch (e) {
+      console.error(e);
+      setHttpResult(JSON.stringify(e))
+    }
+  }
+
+  const handleAxios = async (url: string) => {
+    try {
+      const response = await axios.get(url);
+      setHttpResult(JSON.stringify(response.data))
+    } catch (e) {
+      console.error(e);
+      setHttpResult(JSON.stringify(e))
+    }
+  };
+
+  const handleClearHttp = () => {
+    try {
+      setHttpResult("");
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   return (
     <>
       <h1>React MSAL Android WebView Sample</h1>
@@ -83,6 +117,15 @@ const MainPage = () => {
         <button onClick={handleScan}>Scan</button>
         <button onClick={handleClearScan}>Clear Scan</button>
         <p>scan: {scanResult}</p>
+      </div>
+
+      <div>
+        <button onClick={() => handleFetch(intenalUrl)}>Fetch Internal</button>
+        <button onClick={() => handleFetch(externalUrl)}>Fetch External</button>
+        <button onClick={() => handleAxios(intenalUrl)}>Axios Internal</button>
+        <button onClick={() => handleAxios(externalUrl)}>Axios External</button>
+        <button onClick={handleClearHttp}>Clear Http</button>
+        <p>http: {httpResult}</p>
       </div>
     </>
   );
